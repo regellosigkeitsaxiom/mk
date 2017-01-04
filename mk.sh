@@ -4,20 +4,26 @@ case $1 in
   "")
     stack --nix build
   ;;
-  "install")
+  "i")
     stack --nix install
   ;;
-  "deps")
+  "d")
     vim $project.cabal
   ;;
-  "repl")
+  "r")
     stack --nix ghci
   ;;
-  "solve")
+  "s")
     stack --nix solver --update-config
   ;;
-  "run")
-    stack exec $project
+  "t")
+    stack --nix test
+  ;;
+  "ee")
+    stack --nix exec $project
+  ;;
+  "e")
+    stack --nix exec $2
   ;;
   *)
     echo "It's pitch dark here!"
