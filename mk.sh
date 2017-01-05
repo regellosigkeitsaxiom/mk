@@ -11,7 +11,7 @@ case $1 in
     vim $project.cabal
   ;;
   "r")
-    stack --nix ghci
+    stack --nix ghci $2
   ;;
   "s")
     stack --nix solver --update-config
