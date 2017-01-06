@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
-project=$(basename `pwd`)
+files=`ls -1 | grep .cabal$`
+project=${files%.*}
+
 case $1 in
+  "q")
+    echo $project
+  ;;
   "")
     stack --nix build
   ;;
@@ -20,6 +25,7 @@ case $1 in
     stack --nix test
   ;;
   "ee")
+    stack --nix install &&
     stack --nix exec $project
   ;;
   "e")
