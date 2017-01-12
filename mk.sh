@@ -18,7 +18,16 @@ case $1 in
   "r")
     stack --nix ghci $2
   ;;
+  "ni")
+    nix-env -if .
+  ;;
+  "n")
+    cabal2nix --shell . > default.nix
+  ;;
   "s")
+    vim stack.yaml
+  ;;
+  "ss")
     stack --nix solver --update-config
   ;;
   "t")
