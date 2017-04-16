@@ -9,8 +9,8 @@ cow() {
 
 msg() {
   if [ $? -eq 0 ]
-  then echo -e "\033[1;32mSuccess\033[0m"
-  else echo -e "\033[1;31mFail\033[0m"
+  then echo -e "\033[1;32mSUCCESS\033[0m"
+  else echo -e "\033[1;31mFAILURE\033[0m"
   fi
 }
 
