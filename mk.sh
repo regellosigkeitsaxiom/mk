@@ -4,13 +4,13 @@ project=${files%.*}
 
 cow() {
   #cowsay "Starting"
-  figlet '3... 2... 1... Start!'
+  echo -e "\033[1;33m$(figlet '3... 2... 1... Start!')\033[0m"
 }
 
 msg() {
   if [ $? -eq 0 ]
-  then echo -e "\033[1;32mSUCCESS\033[0m"
-  else echo -e "\033[1;31mFAILURE\033[0m"
+  then echo -e "\033[1;32m$(figlet 'Success!')\033[0m"
+  else echo -e "\033[1;31m$(figlet 'Failure...')\033[0m"
   fi
 }
 
