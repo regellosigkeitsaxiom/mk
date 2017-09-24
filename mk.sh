@@ -20,19 +20,22 @@ case $1 in
   ;;
   "")
     cow
-    stack --nix build
+    #stack --nix build
+    nix-shell --run "cabal build"
     msg
   ;;
   "i")
     cow
-    stack --nix install
+    #stack --nix install
+    nix-env -if.
     msg
   ;;
   "d")
     vim $project.cabal
   ;;
   "r")
-    stack --nix ghci $2
+    #stack --nix ghci $2
+    nix-shell --run "cabal repl"
   ;;
   "ni")
     cow
@@ -54,19 +57,24 @@ case $1 in
   ;;
   "t")
     cow
-    stack --nix test
+    #stack --nix test
+    nix-shell --run "cabal test"
     msg
   ;;
   "ee")
     cow
-    stack --nix install &&
+    #stack --nix install &&
     stack --nix exec $project
     msg
   ;;
   "e")
     cow
-    stack --nix exec $2
+    #stack --nix exec $2
+    nix-shell --run "cabal run ${@:2}"
     msg
+  ;;
+  "c")
+    cabal2nix --shell . > default.nix
   ;;
   *)
     echo "It's pitch dark here!"
