@@ -3,7 +3,6 @@ files=`ls -1 | grep .cabal$`
 project=${files%.*}
 
 cow() {
-  #cowsay "Starting"
   echo -e "\033[1;33m$(figlet '3... 2... 1... Start!')\033[0m"
 }
 
@@ -20,47 +19,70 @@ case $1 in
   ;;
   "")
     cow
-    #stack --nix build
-    nix-shell --run "cabal build"
+    nixos-version 2> /dev/null
+    if [ $? -ne 0 ]
+    then stack build
+    elif [ -f default.nix ]
+    then nix-shell --run "cabal build"
+    else stack --nix build
+    fi
     msg
   ;;
   "i")
     cow
-    #stack --nix install
-    nix-env -if.
+    nixos-version 2> /dev/null
+    if [ $? -ne 0 ]
+    then stack install
+    elif [ -f default.nix ]
+    then nix-env -if.
+    else stack --nix install
+    fi
     msg
   ;;
   "d")
-    vim $project.cabal
+    $EDITOR $project.cabal
   ;;
   "r")
-    #stack --nix ghci $2
-    nix-shell --run "cabal repl"
+    nixos-version 2> /dev/null
+    if [ $? -ne 0 ]
+    then stack ghci $2
+    elif [ -f default.nix ]
+    then nix-shell --run "cabal repl"
+    else stack --nix ghci
+    fi
   ;;
   "s")
-    vim stack.yaml
+    $EDITOR stack.yaml
   ;;
   "ss")
     cow
-    stack --nix solver --update-config
+    nixos-version 2> /dev/null
+    if [ $? -ne 0 ]
+    then stack solver --update-config
+    else stack --nix solver --update-config
+    fi
     msg
   ;;
   "t")
     cow
-    #stack --nix test
-    nix-shell --run "cabal test"
+    nixos-version 2> /dev/null
+    if [ $? -ne 0 ]
+    then stack test
+    elif [ -f default.nix ]
+    then nix-shell --run "cabal test"
+    else stack --nix test
+    fi
   msg
-  ;;
-  "ee")
-    cow
-    #stack --nix install &&
-    stack --nix exec $project
-    msg
   ;;
   "e")
     cow
-    #stack --nix exec $2
-    nix-shell --run "cabal run ${@:2}"
+    nixos-version 2> /dev/null
+    if [ $? -ne 0 ]
+    then stack install && stack exec ${@:2}
+    elif [ -f default.nix ]
+    then nix-shell --run "cabal run ${@:2}"
+    else stack --nix install && stack --nix exec ${@:2}
+    fi
     msg
   ;;
   "c")
