@@ -37,16 +37,6 @@ case $1 in
     #stack --nix ghci $2
     nix-shell --run "cabal repl"
   ;;
-  "ni")
-    cow
-    nix-env -if .
-    msg
-  ;;
-  "n")
-    cow
-    cabal2nix --shell . > default.nix
-    msg
-  ;;
   "s")
     vim stack.yaml
   ;;
@@ -59,7 +49,7 @@ case $1 in
     cow
     #stack --nix test
     nix-shell --run "cabal test"
-    msg
+  msg
   ;;
   "ee")
     cow
@@ -74,7 +64,10 @@ case $1 in
     msg
   ;;
   "c")
-    cabal2nix --shell . > default.nix
+    if [ -f "auto.nix" ]
+    then cabal2nix . > auto.nix
+    else cabal2nix --shell . > default.nix
+    fi
   ;;
   *)
     echo "It's pitch dark here!"
